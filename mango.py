@@ -29,7 +29,7 @@ def graficar_2d(pt):
     plt.pause(0.001)
     plt.draw()
     plt.cla()
-    
+
 def graficar(pt, ax):
     """
     Grafica los puntos en 3D.
@@ -49,7 +49,7 @@ def graficar(pt, ax):
     plt.pause(0.001)
     plt.draw()
     plt.cla()
-    
+
 def dominancia(a, b):
     """
     Verifica si el punto 'a' domina al punto 'b' en términos de pareto.
@@ -61,15 +61,15 @@ def dominancia(a, b):
     Returns:
         bool: True si el punto 'a' domina a 'b', False de lo contrario.
     """
-    
+
     #Se define la primer condicion de acuerdo a la dominancia de Pareto
-    #Donde cada elemento de 'a' en menor o igual a cada elemnto de 'b' 
-    condicion_1 = a <= b
-    
-    #Se define la segunda condicion 
+    #Donde cada elemento de 'a' en menor o igual a cada elemnto de 'b'
+    condicion_1 = a <=
+
+    #Se define la segunda condicion
     #Donde algun elemento de a debe ser estrictamente menor a los elementos de b
     condicion_2 = a < b
-    
+
     #Evaluaremos las condiciones, en caso de que se cumplan retornaremos True
     #En caso contrario retornaremos False
     if np.all(condicion_1) and np.any(condicion_2):
@@ -248,11 +248,11 @@ def ordenamiento_no_dominado(rank_indice, crowding):
 def seleccion(individuos, q_t):
     """
     Selecciona q_t individuos de manera aleatoria de una población de tamaño 'individuos'.
-    
+
     Args:
     - individuos (int): tamaño de la población.
     - q_t (int): cantidad de individuos a seleccionar.
-    
+
     Returns:
     - elegidos (List[int]): lista de índices de los individuos seleccionados.
     """
@@ -261,7 +261,7 @@ def seleccion(individuos, q_t):
         index = np.random.randint(0,individuos)  # Escoge un índice aleatorio entre 0 e individuos (no inclusive)
         padre = index  # Elige el índice como el padre
         elegidos.append(padre)  # Agrega el índice del padre a la lista de seleccionados
-    
+
     return elegidos  # Retorna la lista de índices seleccionados
 
 def cruza(individuos, tasa):
@@ -325,34 +325,34 @@ def NSGA_II(p_t, valores, g):
 
     # Imprimimos información de la generación actual
     print(f"NSGA-II en la generación {g+1}")
-    
+
     # Obtenemos los frentes de Pareto de la población actual
     fronts = frentes_pareto(valores)
-    
+
     # Obtenemos la posición de cada individuo en su frente
     posicion_ranking = rank(fronts)
-    
+
     # Calculamos la distancia de crowding de cada individuo
     crowding_d = crowding(valores, fronts)
-    
+
     # Ordenamos los individuos por el ranking y la distancia de crowding
     indices_nd = ordenamiento_no_dominado(posicion_ranking, crowding_d)
-    
+
     # Seleccionamos la porción de mejores sobrevivientes para la siguiente generación
     sobrevivientes = p_t[indices_nd[:n_poblacion]]
-    
+
     # Seleccionamos los padres para la cruza
     seleccionados = seleccion(individuos=n_poblacion, q_t=n_poblacion)
-    
+
     # Realizamos la cruza con los padres seleccionados
     cruza_t = cruza(seleccionados, tasa=tasa_cruza)
-    
+
     # Realizamos la mutación a partir de los sobrevivientes obtenidos
     pt_next = np.array([mutacion(sobrevivientes[i], dmin, dmax, tasa_mutacion) for i in cruza_t])
-    
+
     # Combinamos los sobrevivientes y los hijos mutados para formar la siguiente generación
     poblacion_sig = np.concatenate([sobrevivientes, pt_next])
-    
+
     # Retornamos la población de la siguiente generación
     return poblacion_sig
 
@@ -425,11 +425,11 @@ def g(x, n):
 def h1(f, g):
     """
     Calcula el valor h1 en función de f y g.
-    
+
     Args:
     f: valor de la variable f
     g: valor de la variable g
-    
+
     Returns:
     Valor del valor auxiliara h1
     """
@@ -439,11 +439,11 @@ def h1(f, g):
 def h2(f, g):
     """
     Calcula el valor h2 en función de f y g.
-    
+
     Args:
     f: valor de la variable f
     g: valor de la variable g
-    
+
     Returns:
     Valor del valor auxiliar h2
     """
@@ -453,21 +453,21 @@ def h2(f, g):
 def h3(f, g):
     """
     Calcula el valor h3 en función de f y g.
-    
+
     Args:
     f: valor de la variable f
     g: valor de la variable g
-    
+
     Returns:
     Valor del valor auxiliar h3
     """
     h = 1 - np.sqrt(f/g) - ((f/g) * np.sin(f))
     return h
-   
+
 def f(x):
     """
     Obtiene el valor de la variable f a partir de la matriz x.
-    
+
     Args:
     x: matriz de valores
     
