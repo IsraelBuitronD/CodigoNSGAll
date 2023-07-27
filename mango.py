@@ -203,8 +203,8 @@ def rank(fronts):
     - fronts (list): Una lista de listas de índices de individuos que pertenecen a cada frente de Pareto.
 
     Returns:
-    - rank_indice (dict): Un diccionario que contiene el índice de rango para cada individuo. 
-    El índice de rango es un número entero que indica el nivel del frente de Pareto al que pertenece el individuo 
+    - rank_indice (dict): Un diccionario que contiene el índice de rango para cada individuo.
+    El índice de rango es un número entero que indica el nivel del frente de Pareto al que pertenece el individuo
     (los individuos en el primer frente tienen un índice de rango de 0, los del segundo frente tienen un índice de rango de 1, etc.).
     """
 
@@ -286,7 +286,7 @@ def cruza(individuos, tasa):
         descendencia[2*i, 0:punto_cruza] = individuos[x, 0:punto_cruza]  # se crea el hijo 1 con la primera parte del primer padre y la segunda del segundo padre
         descendencia[2*i, punto_cruza:] = individuos[y, punto_cruza:]
         descendencia[2*i+1, 0:punto_cruza] = individuos[y, 0:punto_cruza]  # se crea el hijo 2 con la primera parte del segundo padre y la segunda del primer padre
-        descendencia[2*i+1, punto_cruza:] = individuos[x, punto_cruza:] 
+        descendencia[2*i+1, punto_cruza:] = individuos[x, punto_cruza:]
     return descendencia
 
 def mutacion(individuo, min_val, max_val, tasa_m):
@@ -470,7 +470,7 @@ def f(x):
 
     Args:
     x: matriz de valores
-    
+
     Returns:
     Valor de la variable f
     """
@@ -480,11 +480,11 @@ def f(x):
 def zdt1(x, n):
     """
     Calcula la función de Zitzler-Deb-Thiele nº 1 en función de x y n.
-    
+
     Args:
     x: matriz de valores de entrada
     n: número de variables de entrada
-    
+
     Returns:
     Matriz con los valores de salida de la función
     """
@@ -495,11 +495,11 @@ def zdt1(x, n):
 def zdt2(x, n):
     """
     Calcula la función de Zitzler-Deb-Thiele nº 2 en función de x y n.
-    
+
     Args:
     x: matriz de valores de entrada
     n: número de variables de entrada
-    
+
     Returns:
     Matriz con los valores de salida de la función
     """
@@ -510,26 +510,26 @@ def zdt2(x, n):
 def zdt3(x, n):
     """
     Calcula la función de Zitzler-Deb-Thiele nº 3 en función de x y n.
-    
+
     Args:
     x: matriz de valores de entrada
     n: número de variables de entrada
-    
+
     Returns:
     Matriz con los valores de salida de la función
     """
     f1 = f(x)
     f2 = g(x, n) * h3(f(x), g(x, n))
     return np.stack([f1, f2], axis=1)
- 
+
 def omega(gx, xi):
     """
     Calcula la función omega en función de gx y xi.
-    
+
     Args:
     gx: valor de gx
     xi: valor de xi
-    
+
     Returns:
     Valor de la función omega
     """
@@ -538,33 +538,33 @@ def omega(gx, xi):
 def dtlz1(x):
     """
     Calcula la función dtlz1 en función de x.
-    
+
     Args:
     x: matriz de valores de entrada
-    
+
     Returns:
     Matriz con los valores de salida de la función
     """
     print("DTLZ1")
-    
+
     funciones = []
 
     gx = 100 * (np.sum(np.square(x[:, m:] - 0.5) - np.cos(20 * np.pi * (x[:, m:] - 0.5)), axis=1))
- 
+
     for f in range(m): # M número de funciones
         if f == m-1:
             xi = (1 - x[:, 0]) #(1 - x1)
         else:
             xi = x[:, 0] # x1
-            
+
             for i in range((m-1) - f - 1): # (... Xm-1)
-                xi = xi * x[:, (i+1)] 
-            
+                xi = xi * x[:, (i+1)]
+
             if f == 0:
                 xi = xi
             else:
                 xi = xi * (1 - x[:, ((m-1) - f)]) # (1 - Xm-1)
-            
+
         fi = 0.5 * (xi * (1 + gx)) # fm(x)
 
         funciones.append(fi)
@@ -582,29 +582,29 @@ def dtlz2(x):
     Matriz con los valores de salida de la función
     """
     print("DTLZ2")
-    
+
     funciones = []
-    
+
     gx = np.sum(np.square(x[:, m:] - 0.5), axis=1)
-    
+
     for f in range(m):  # m numero de funciones
         if f == m - 1:
             xi = np.sin(x[:, 0] * (np.pi) / 2)  # sen(x1) pi/2
         else:
             xi = np.cos(x[:, 0] * (np.pi) / 2)  # x1
-            
+
             for i in range((m - 1) - f - 1):  # (... Xm-1)
-                xi = xi * (np.cos(x[:, i + 1] * (np.pi) / 2)) 
-            
+                xi = xi * (np.cos(x[:, i + 1] * (np.pi) / 2))
+
             if f == 0:
-                xi = xi * (np.cos(x[:, (m - 2) - f] * (np.pi) / 2)) 
+                xi = xi * (np.cos(x[:, (m - 2) - f] * (np.pi) / 2))
             else:
                 xi = xi * (np.sin(x[:, (m - 1) - f] * (np.pi) / 2))  # (1 - Xm-1)
-            
+
         fi = (1 + gx) * xi  # fm(x)
 
         funciones.append(fi)
-    
+
     return np.stack(funciones, axis=1)
 
 def dtlz3(x):
@@ -618,30 +618,30 @@ def dtlz3(x):
     Matriz con los valores de salida de la función
     """
     print("DTLZ3")
-    
+
     funciones = []
-    
+
     gx = 100 * (np.sum(np.square(x[:, m:] - 0.5) - np.cos(20 * np.pi * (x[:, m:] - 0.5)), axis=1))
-    
+
     for f in range(m):  # m numero de funciones
         if f == m - 1:
             xi = (np.sin(x[:, 0] * (np.pi) / 2))  # (sen(x1) pi/2)
         else:
             xi = np.cos(x[:, 0] * (np.pi) / 2)  # x1
-            
+
             for i in range((m - 1) - f - 1):  # (... Xm-1)
-                
-                xi  = xi * (np.cos(x[:, i + 1] * (np.pi) / 2)) 
-            
+
+                xi  = xi * (np.cos(x[:, i + 1] * (np.pi) / 2))
+
             if f == 0:
-                xi = xi * (np.cos(x[:, (m - 2) - f] * (np.pi) / 2)) 
+                xi = xi * (np.cos(x[:, (m - 2) - f] * (np.pi) / 2))
             else:
                 xi = xi * (np.sin(x[:, (m - 1) - f] * (np.pi) / 2))  # (1 - Xm-1)
-            
+
         fi = (1 + gx) * xi  # fm(x)
 
         funciones.append(fi)
-    
+
     return np.stack(funciones, axis=1)
 
 def dtlz4(x):
@@ -725,29 +725,29 @@ def dtlz6(x):
     Matriz con los valores de salida de la función
     """
     print("DTLZ6")
-    
+
     funciones = []
 
     gx = np.sum(np.power(x[:, m:], 0.1), axis=1)
-    
+
     for f in range(m):  # m nuemro de funciones
         if f == m-1:
             xi = np.sin(omega(gx, x[:, 0]) * (np.pi)/2)  # sin(x1 * pi/2)
         else:
             xi = np.cos(omega(gx, x[:, 0]) * (np.pi)/2)  # x1
-            
+
             for i in range((m-1)-f-1):  # (... Xm-1)
                 xi *= np.cos(omega(gx, x[:, i+1]) * (np.pi)/2)
-            
+
             if f == 0:
                 xi *= np.cos(omega(gx, x[:, (m-2)-f]) * (np.pi)/2)
             else:
                 xi *= np.sin(omega(gx, x[:, (m-1)-f]) * (np.pi)/2)  # (1 - Xm-1)
-            
+
         fi = (1 + gx) * xi  # fm(x)
 
         funciones.append(fi)
-    
+
     return np.stack(funciones, axis=1)
 
 def kursawe(x):
@@ -762,7 +762,7 @@ def kursawe(x):
     sq_x = x ** 2
     objetivo_1 = -10 * np.exp(-0.2 * np.sqrt(np.sum(sq_x[:, :2], axis=1))) - 10 * np.exp(-0.2 * np.sqrt(np.sum(sq_x[:, 1:], axis=1)))
     objetivo_2 = np.sum(np.power(np.abs(x), 0.8) + 5 * np.sin(x ** 3), axis=1)
-    
+
     return np.stack([objetivo_1, objetivo_2], axis=1)
 
 def main():
